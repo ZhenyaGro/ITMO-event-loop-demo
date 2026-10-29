@@ -1,0 +1,18 @@
+{
+  "name": "event-loop-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Интерактивная лаборатория Event Loop и отзывчивости интерфейса",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test tests/compute.test.js",
+    "test:browser": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "vite": "^8.3.5"
+  }
+}
