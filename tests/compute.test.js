@@ -1,8 +1,8 @@
 /** @file Проверки алгоритма и стратегий, которые выполняются без браузера. */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createWork, formatChecksum, MAX_ELEMENTS, processUntil } from '../src/compute.js';
-import { runBlocking, runChunked, runMicrotasks } from '../src/runners.js';
+import { createWork, formatChecksum, MAX_ELEMENTS, processUntil } from '../src/lab/compute.js';
+import { runBlocking, runChunked, runMicrotasks } from '../src/lab/runners.js';
 
 /**
  * Независимый эталон на BigInt: маска явно ограничивает каждое число 32 битами.

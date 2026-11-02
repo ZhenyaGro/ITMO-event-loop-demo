@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101310" />
+  <meta name="description"
+    content="Три шага к отзывчивому интерфейсу: синхронный цикл, разбиение через setTimeout и отображение прогресса." />
+  <title>Event Loop — три шага к отзывчивому интерфейсу</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+</head>
+
+<body data-stage="blocking">
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="%BASE_URL%"><span class="brand-icon" aria-hidden="true">↻</span> <strong>event loop</strong> <span class="brand-sub">/ три шага</span></a>
+    </header>
+
+    <main>
+      <div class="intro">
+        <h1>Как избежать <em>блокировки интерфейса</em></h1>
+        <span class="eyebrow">ИТМО · ДЕМОНСТРАЦИЯ</span>
+      </div>
+
+      <nav class="stages" aria-label="Этап демонстрации">
+        <button type="button" data-stage="blocking" aria-pressed="true">1. Блокировка</button>
+        <button type="button" data-stage="chunking" aria-pressed="false">2. Разбиение</button>
+        <button type="button" data-stage="progress" aria-pressed="false">3. Прогресс</button>
+      </nav>
+
+      <form id="controls" class="controls">
+        <label>Нагрузка
+          <select id="load">
+            <option value="50000000">Лёгкая · 50 млн</option>
+            <option value="250000000">Средняя · 250 млн</option>
+            <option value="500000000" selected>Для доклада · 500 млн</option>
+            <option value="1000000000">Максимум · 1 млрд</option>
+            <option value="custom" disabled>Своя нагрузка</option>
+          </select>
+        </label>
+        <label>Итераций, N
+          <input id="limit" type="number" min="1" max="1000000000" step="1" value="500000000" required
+            aria-describedby="load-note" />
+        </label>
+        <p id="load-note">Только <code>i++</code> от 0 до N.<br>Одинаковое N во всех трёх этапах.</p>
+        <div class="actions">
+          <button id="start" class="primary" type="submit">▶ Запустить</button>
+          <button id="reset" type="button">Сбросить</button>
+        </div>
+      </form>
+
+      <div id="error" class="warning" role="alert" hidden></div>
+      <div id="visibility-warning" class="warning" role="status" hidden>Вкладка была скрыта. Фоновые ограничения влияют
+        на замеры; повторите опыт в активной вкладке.</div>
+      <noscript>
+        <p class="warning">Для демонстрации нужно включить JavaScript.</p>
+      </noscript>
+
+      <div class="demo-grid">
+        <section class="panel code-panel" aria-labelledby="code-title">
+          <div class="panel-heading">
+            <h2 id="code-title">Одна длинная задача</h2>
+            <span id="code-change" class="tag">while</span>
+          </div>
+          <p id="constants" class="constants"></p>
+          <pre tabindex="0" aria-label="Исполняемый код выбранного этапа"><code id="source-code"></code></pre>
+        </section>
+
+        <div class="experiment-stage">
+          <section class="panel pulse-panel" aria-labelledby="pulse-title">
+            <div class="section-heading">
+              <h2 id="pulse-title"><span class="live-dot"></span> Пульс интерфейса</h2>
+              <span class="tag">requestAnimationFrame</span>
+            </div>
+            <div class="pulse-content">
+              <div class="orbit-wrap">
+                <div class="orbit" aria-hidden="true">
+                  <div class="orbit-inner"></div>
+                  <div id="orbit-hand" class="orbit-hand"><i></i></div>
+                  <div class="orbit-center"><span id="frame-count">0</span><small>кадров</small></div>
+                </div>
+                <span class="orbit-caption">Движется только через JavaScript</span>
+              </div>
+              <div class="pulse-readout">
+                <span class="metric-label">Максимальный интервал кадров</span>
+                <div class="hero-metric"><span id="max-gap">—</span><span class="metric-unit">мс</span></div>
+                <p id="gap-context" class="muted">Измерение начнётся с запуском опыта.</p>
+                <div class="probe-row">
+                  <button id="probe" class="button probe-button" type="button">Проверить отклик <span
+                      aria-hidden="true">↗</span></button>
+                  <span class="click-count"><strong id="click-count">0</strong> нажатий</span>
+                </div>
+                <span id="probe-hint" class="probe-hint">Нажимайте во время вычислений</span>
+              </div>
+            </div>
+          </section>
+
+          <section id="experiment" class="panel experiment" aria-labelledby="experiment-title">
+            <div class="panel-heading">
+              <h2 id="experiment-title">Вычислительная задача</h2>
+              <span id="status" role="status" data-state="idle">Готов к запуску</span>
+            </div>
+
+            <div class="metrics">
+              <div><span>Общее время</span><strong id="elapsed">—</strong></div>
+              <div class="counter-metric"><span>Итоговый счётчик</span><strong id="result">—</strong></div>
+            </div>
+
+            <div id="progress-section" hidden>
+              <div class="progress-label"><label for="progress">Выполнено</label><strong
+                  id="progress-percent">0%</strong></div>
+              <progress id="progress" max="500000000" value="0">0%</progress>
+              <p id="progress-count">0 из 500 000 000 итераций</p>
+            </div>
+
+            <div class="explanation">
+              <h3 id="explanation-title"></h3>
+              <p id="explanation-text"></p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <a href="https://learn.javascript.ru/event-loop" target="_blank" rel="noreferrer">Источник: learn.javascript.ru
+        ↗</a>
+      <a id="lab-link" class="footer-link" href="%BASE_URL%">Перейти к расширенной лаборатории Event Loop →</a>
+    </footer>
+  </div>
+  <script type="module" src="/src/demo/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,363 @@
+@import "../shared/ui.css";
+
+@layer base {
+  body {
+    background: var(--bg);
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  body[data-stage="chunking"] {
+    --accent: var(--green);
+  }
+  body[data-stage="progress"] {
+    --accent: var(--blue);
+  }
+  h2,
+  h3 {
+    font-size: 1em;
+  }
+  h3 {
+    font-weight: 600;
+  }
+  a {
+    text-underline-offset: 4px;
+  }
+  h1 {
+    font-size: 1.6em;
+    font-weight: 600;
+    letter-spacing: -0.7px;
+  }
+  pre {
+    padding: 8px 0;
+    background: #121712;
+    font-size: 18px;
+    line-height: 1.36;
+    overflow: auto;
+  }
+}
+
+@layer layout {
+  .shell {
+    max-width: 1700px;
+    padding: 0 28px;
+  }
+  .topbar {
+    min-height: 50px;
+    gap: 16px;
+  }
+  .intro {
+    gap: 20px;
+    padding: 10px 0;
+  }
+  .demo-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+    gap: 16px;
+    align-items: stretch;
+  }
+  .experiment-stage {
+    gap: 16px;
+    align-content: start;
+  }
+  .panel {
+    border-radius: 12px;
+    min-width: 0;
+  }
+  footer {
+    padding: 12px 0;
+    font-size: 0.75em;
+    color: var(--muted);
+  }
+}
+
+@layer components {
+  button,
+  input,
+  select {
+    border: 1px solid var(--border);
+    background: var(--panel-raised);
+    min-height: 42px;
+    padding: 8px 13px;
+  }
+  button {
+    font-weight: 550;
+  }
+  button:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: #2a3228;
+  }
+  button:disabled,
+  input:disabled,
+  select:disabled {
+    opacity: 0.45;
+  }
+  .brand {
+    display: flex;
+    font-size: 1.15em;
+  }
+  .eyebrow {
+    font-size: 0.7em;
+    letter-spacing: 1.4px;
+    white-space: nowrap;
+  }
+  .stages {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .stages button {
+    text-align: left;
+    font-size: 1.15em;
+    padding-left: 18px;
+  }
+  .stages [aria-pressed="true"] {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+  }
+  .controls {
+    display: flex;
+    gap: 14px;
+    align-items: end;
+    padding: 8px 0;
+  }
+  .controls label {
+    display: grid;
+    gap: 4px;
+    font-size: 0.78em;
+    color: var(--muted);
+  }
+  .controls input,
+  .controls select {
+    font-size: 1.15em;
+    color: var(--text);
+  }
+  #limit {
+    width: 175px;
+  }
+  #load-note {
+    color: var(--muted);
+    font-size: 0.75em;
+    padding-bottom: 3px;
+  }
+  .actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+  }
+  .primary {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .primary:hover:not(:disabled) {
+    background: var(--green);
+  }
+  .panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .code-panel .panel-heading {
+    padding: 10px 18px 5px;
+  }
+  .tag {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 0.8em;
+  }
+  .constants {
+    padding: 0 18px 8px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.76em;
+  }
+  .code-line {
+    display: block;
+    min-height: 1.36em;
+    padding: 0 17px;
+    border-left: 3px solid transparent;
+    white-space: pre;
+    width: max-content;
+    min-width: 100%;
+  }
+  .code-line.blank {
+    min-height: 0.45em;
+    height: 0.45em;
+    line-height: 0.45em;
+  }
+  .code-line.highlight {
+    background: color-mix(in srgb, var(--accent) 12%, #121712);
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+  .experiment {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 22px;
+    gap: 8px;
+  }
+  #status {
+    color: var(--accent);
+    font-size: 0.78em;
+    text-align: right;
+  }
+  .metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 18px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .metrics > div {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .metrics span {
+    color: var(--muted);
+    font-size: 0.76em;
+  }
+  .metrics strong {
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 1.55em;
+    white-space: nowrap;
+  }
+  .counter-metric strong {
+    font-size: 1.3em;
+  }
+  #progress-section {
+    padding-top: 2px;
+  }
+  .progress-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85em;
+  }
+  .progress-label strong {
+    color: var(--accent);
+    font-size: 1.2em;
+  }
+  progress {
+    display: block;
+    appearance: none;
+    width: 100%;
+    height: 12px;
+    margin: 7px 0;
+    border: none;
+    border-radius: 6px;
+    background: #303a30;
+    overflow: hidden;
+  }
+  progress::-webkit-progress-bar {
+    background: #303a30;
+    border-radius: 6px;
+  }
+  progress::-webkit-progress-value {
+    background: var(--accent);
+  }
+  progress::-moz-progress-bar {
+    background: var(--accent);
+  }
+  #progress-count {
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    font-size: 0.75em;
+  }
+  .explanation {
+    margin-top: auto;
+    border-left: 2px solid var(--accent);
+    padding-left: 13px;
+  }
+  .explanation h3 {
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .explanation p {
+    font-size: 0.87em;
+  }
+  .warning {
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    border: 1px solid #a56452;
+    color: var(--orange);
+  }
+}
+
+@layer responsive {
+  @media (min-width: 1650px) {
+    .shell {
+      padding: 0 40px;
+    }
+  }
+  @media (max-width: 1100px) {
+    .shell {
+      padding: 0 20px;
+    }
+    .eyebrow,
+    #load-note {
+      display: none;
+    }
+    .experiment {
+      padding: 16px;
+    }
+    pre {
+      font-size: 16px;
+    }
+  }
+  @media (max-width: 800px) {
+    .shell {
+      padding: 0 14px;
+    }
+    .topbar {
+      flex-wrap: wrap;
+      padding: 10px 0;
+    }
+    .brand {
+      font-size: 1em;
+    }
+    h1 {
+      font-size: 1.5em;
+    }
+    .intro {
+      padding: 16px 0;
+    }
+    .stages {
+      gap: 5px;
+    }
+    .stages button {
+      padding: 10px 6px;
+      text-align: center;
+      font-size: 0.85em;
+    }
+    .controls {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .controls label {
+      flex: 1 1 140px;
+    }
+    #limit {
+      width: 100%;
+    }
+    .actions {
+      width: 100%;
+    }
+    .actions button {
+      flex: 1;
+    }
+    .demo-grid {
+      grid-template-columns: 1fr;
+    }
+    .experiment {
+      gap: 18px;
+    }
+    footer {
+      flex-direction: column;
+    }
+  }
+}

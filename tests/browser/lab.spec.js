@@ -30,7 +30,7 @@ test.beforeEach(async ({ page }) => {
 /**
  * Устанавливает режим и нагрузку через элементы управления страницы.
  * @param {import('@playwright/test').Page} page Страница тестового браузера.
- * @param {import('../../src/modes.js').ModeId} mode Идентификатор режима.
+ * @param {import('../../src/lab/modes.js').ModeId} mode Идентификатор режима.
  * @param {string} [total='8000000'] Строковое значение option в списке нагрузки.
  * @returns {Promise<void>} Завершается после применения обеих настроек.
  */

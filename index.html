@@ -9,7 +9,7 @@
     content="Интерактивная лаборатория Event Loop: сравните синхронный JavaScript, микрозадачи, порционную обработку и Web Worker на реальных вычислениях." />
   <title>Event Loop — лаборатория отзывчивости</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/src/style.css" />
+  <link rel="stylesheet" href="/src/lab/style.css" />
 </head>
 
 <body data-mode="blocking">
@@ -205,10 +205,11 @@
         </div>
       </section>
     </main>
-    <footer><span>Event Loop Lab <span class="footer-dot">·</span> Учебный эксперимент</span><span>Нативный JavaScript.
-        Реальные измерения.</span></footer>
+    <footer><span>Event Loop Lab <span class="footer-dot">·</span> Учебный эксперимент</span>
+      <a id="demo-link" class="footer-link" href="%BASE_URL%demo/">Перейти к упрощённой лаборатории Event Loop →</a>
+    </footer>
   </div>
-  <script type="module" src="/src/app.js"></script>
+  <script type="module" src="/src/lab/app.js"></script>
 </body>
 
 </html>
